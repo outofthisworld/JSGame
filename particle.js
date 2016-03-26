@@ -1,25 +1,25 @@
-
-
 var particle = {
-    position: null,
-    velocity: null,
-    
-    create: function(x,y,speed,direction, isRad){
-        this.position = TwoDVector.create(x,y);
-        this.velocity = Object.create(TwoDVector);
-        this.velocity.setLength(speed);
-        if(isRad){
-            this.velocity.setAngle(direction);
-        }else {
-            this.velocity.setAngleDegrees(isRad);
-        }
-    }
-    
-    accel: function(accelVector){
-        this.velocity.addThis(accelVector);
-    }
+    position: null
+    , velocity: null,
 
-    move: function(){
+    create: function (x, y, speed, direction, isRad) {
+        var particle = Object.create(this);
+        particle.position = TwoDVector.create(x, y);
+        particle.velocity = TwoDVector.create(0, 0);
+        particle.velocity.setLength(speed);
+        if (isRad) {
+            particle.velocity.setAngle(direction);
+        } else {
+            particle.velocity.setAngleDegrees(direction);
+        }
+        return particle;
+    },
+
+    accel: function (accelVector) {
+        this.velocity.addThis(accelVector);
+    },
+
+    move: function () {
         this.position.addThis(this.velocity);
     }
 }

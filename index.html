@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" href="styles.css">
-    <script src="main.js">
-    </script>
+    <script src="vector.js"></script>
+    <script src="particle.js"></script>
 
     <script>
         window.onload = function () {
@@ -15,8 +15,20 @@
                 , height = canvas.setAttribute("height", window.innerHeight)
                 , context = canvas.getContext("2d");
 
-            function update() {
+            var myShip = particle.create(canvas.width / 2, canvas.height / 2, 5, 90, false);
+            console.log(myShip.position)
+            var thrust = TwoDVector.create(0, 0);
 
+            update();
+
+            function update() {
+                context.beginPath();
+                myShip.move();
+                context.arc(myShip.position.getX(), myShip.position.getY(), 50, 0, Math.PI * 2, true);
+
+                context.fill();
+                context.clearRect(0, 0, width, height);
+                requestAnimationFrame(update);
             }
         }
     </script>

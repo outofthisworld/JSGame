@@ -5,7 +5,7 @@ Created by Dale Appleby
 
 var TwoDVector = {
     _x: 0
-    , _Y: 0,
+    , _y: 0,
 
     create: function (x, y) {
         var vec = Object.create(this);
@@ -97,7 +97,7 @@ var TwoDVector = {
     },
 
     setAngle: function (angle) {
-        var length = length();
+        var length = this.length();
         this._x = length * Math.cos(angle);
         this._y = length * Math.sin(angle);
     },
@@ -105,14 +105,21 @@ var TwoDVector = {
     getAngle: function () {
         return Math.atan2(this._y, this._x);
     },
-    
-    setLength: function(length){
+
+    setLength: function (length) {
         var angle = this.getAngle();
         this._y = Math.sin(angle) * length;
         this._x = Math.cos(angle) * length;
-    }
+    },
 
     dotProduct: function (vector) {
         return this._x * vector._x + this._y * vector._y;
     }
+    , getX: function () {
+        return this._x;
+    }
+    , getY: function () {
+        return this._y;
+    }
+
 }
