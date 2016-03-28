@@ -63,11 +63,16 @@ var TwoDVector = {
     },
 
     scaleBy: function (amount) {
+        var newVec = Object.create(this);
+        newVec._x = this._x * amount;
+        newVec._y = this._y * amount;
+        return newVec;
+    }
+    , scaleThisBy: function (amount) {
         this._x *= amount;
         this._y *= amount;
-    },
-
-    scaleBy: function (xAmount, yAmount) {
+    }
+    , scaleThisBy: function (xAmount, yAmount) {
         this._x *= xAmount;
         this._y *= yAmount;
     },
@@ -94,6 +99,10 @@ var TwoDVector = {
 
     setAngleDegrees: function (deg) {
         this.setAngle((Math.PI / 180) * deg);
+    },
+
+    getAngleDegrees: function () {
+        return this.getAngle() * (180 / Math.PI);
     },
 
     setAngle: function (angle) {

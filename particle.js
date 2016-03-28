@@ -16,7 +16,8 @@ var particle = {
     },
 
     accel: function (accelVector) {
-        this.velocity.addThis(accelVector);
+        if (this.velocity.length() + accelVector.length() > 0)
+            this.velocity.addThis(accelVector);
     },
 
     move: function () {

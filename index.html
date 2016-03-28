@@ -15,19 +15,107 @@
                 , height = canvas.setAttribute("height", window.innerHeight)
                 , context = canvas.getContext("2d");
 
-            var myShip = particle.create(canvas.width / 2, canvas.height / 2, 5, 90, false);
-            console.log(myShip.position)
-            var thrust = TwoDVector.create(0, 0);
+            var angle = 0;
 
+            document.body.addEventListener("keydown", function (event) {
+                switch (event.keyCode) {
+                case 38: //up
+                    thrust.setLength(0.08);
+                    break;
+                case 40: //down
+                    thrust.setLength(0);
+                    break;
+                case 37: //left
+                    angle = angle - 0.25;
+                    break;
+                case 39: //right:
+                    angle = angle + 0.25;
+                    break;
+                }
+            });
+
+            document.body.addEventListener("keyup", function (event) {
+                thrust.setLength(0);
+            });
+
+            document.documentElement.style.overflow = 'hidden'; // firefox, chrome
+            document.body.scroll = "no"; // ie only
+
+            var myShip = particle.create(canvas.width / 2, canvas.height / 2, 0, 0, false)
+            var thrust = TwoDVector.create(0, 0);
+            var currentAstroids = [];
             update();
 
-            function update() {
-                context.beginPath();
-                myShip.move();
-                context.arc(myShip.position.getX(), myShip.position.getY(), 50, 0, Math.PI * 2, true);
 
-                context.fill();
-                context.clearRect(0, 0, width, height);
+
+
+            function update() {
+
+                context.clearRect(0, 0, canvas.getAttribute("width"), canvas.height);
+
+                if ((Math.random() * 100) < 0.5) {
+                    currentAstroids.push(particle.create(canvas.width, ((Math.random() + 1) * canvas.height) % canvas.height, 1, Math.random() * 360, false));
+                }
+
+
+                for (var i = 0; i < currentAstroids.length; i++) {
+                    var nVec;
+                    if (currentAstroids[i].position.getX() - 15 < 0) {
+
+                        //The normalized normal wall vector N
+                        nVec = TwoDVector.create(0, 1);
+                        //The astroids current velocity
+                        var velocityVec = currentAstroids[i].velocity;
+                        //|velocityVec| * cos(theta)
+                        var scale = velocityVec.dotProduct(nVec);
+
+                        var projectedVec = nVec.scaleBy(2 * scale);
+
+                        currentAstroids[i].velocity = projectedVec.subtract(velocityVec);
+
+
+                        //currentAstroids.splice(i, 1);
+                    } else if (currentAstroids[i].position.getY() - 15 < 0 || currentAstroids[i].position.getY() + 15 >= canvas.height) {
+                        //The normalized normal wall vector N
+                        nVec = TwoDVector.create(1, 0);
+                        //The astroids current velocity
+                        var velocityVec = currentAstroids[i].velocity;
+                        //|velocityVec| * cos(theta)
+                        var scale = velocityVec.dotProduct(nVec);
+                        var projectedVec = nVec.scaleBy(2 * scale);
+
+                        currentAstroids[i].velocity = projectedVec.subtract(velocityVec);
+
+                    }
+
+                    context.beginPath();
+                    context.arc(currentAstroids[i].position._x, currentAstroids[i].position._y, 30, Math.PI * 2, false);
+                    context.stroke();
+                    currentAstroids[i].move();
+
+                }
+
+                myShip.move();
+                thrust.setAngle(angle);
+                myShip.accel(thrust);
+                context.save();
+                context.beginPath();
+                context.translate(myShip.position.getX(), myShip.position.getY());
+                context.rotate(angle);
+                //context.rect(-25, -25, 50, 50);
+                context.moveTo(0, 0);
+                context.lineTo(0, 10);
+                context.lineTo(25, 0);
+                context.lineTo(0, -10);
+
+                if (thrust.length() > 0) {
+                    context.moveTo(0, 0);
+                    context.lineTo(-50, 5);
+                }
+
+                context.stroke();
+
+                context.restore();
                 requestAnimationFrame(update);
             }
         }
