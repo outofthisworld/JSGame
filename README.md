@@ -12,7 +12,7 @@ Astroids are made from the particle class and set with a current heading of 180d
 
 The dot product of two vectors is given: 
 
-![Alt text](http://www.sciweavers.org/tex2img.php?eq=A%20.%20B%20%3D%20%20%7C%20A%20%7C%20%20%7C%20B%20%7C%20cos%20%5Ctheta%20&bc=Transparent&fc=Black&im=png&fs=12&ff=arev&edit=0)
+![Alt text]("http://www.sciweavers.org/tex2img.php?eq=A%20.%20B%20%3D%20%20%7C%20A%20%7C%20%20%7C%20B%20%7C%20cos%20%5Ctheta%20&bc=Transparent&fc=Black&im=png&fs=12&ff=arev&edit=0")
 
 Thus the scalar projection of of A onto b is given by:
 
